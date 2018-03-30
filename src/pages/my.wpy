@@ -1,0 +1,248 @@
+<template>
+<view class='my-box'>
+ <view class='my-top'>
+  <view class='my-icon'>
+   <image src='{{myicon}}' mode='widthFix'></image>
+  </view>
+  <view class='my-name'>
+    <text wx:if="{{myinfo}}">{{username}}</text>
+    <text wx:else @tap='Login'>{{username}}</text>
+  </view>
+ </view>
+ <view class='order-box c'>
+ <navigator url='/pages/my/orderlist/orderlist'>
+  <text class='fl'>全部订单</text>
+  <text class='fr btnsty'>查看更多>></text>
+  </navigator>
+ </view>
+ <view class='order-status'>
+ <block wx:for="{{orderstatus}}">
+  <view class='status-box'>
+  <navigator>
+  <view class='img'>
+   <image src='{{item.img}}' mode='widthFix'></image>
+  </view>
+   <view class='text-box'>
+    <text>{{item.name}}</text>
+   </view>
+  </navigator>
+  </view>
+ </block>
+ </view>
+ <view class='discount-box'>
+  <block wx:for="{{discountdata}}">
+   <navigator url='{{item.url}}'>
+   <view class='discount c'>
+    <view class=' img fl'>
+     <image src='{{item.img}}' mode='widthFix'></image>
+    </view>
+    <view class='fl'>
+     <text>{{item.name}}</text>
+    </view>
+   </view>
+   </navigator>
+  </block>
+ </view>
+</view>
+</template>
+<script>
+import wepy from "wepy";
+import Commonjs from "../mixins/commonjs";
+
+var commonjs =new Commonjs();
+export default class My extends wepy.page {
+   config={
+     navigationBarTitleText:"个人中心"
+   }
+    data= {
+    name:"这是一个新名字",
+    times: ["2018-3-11 19:20:15", "2018-3-15 13:10:5", "2018-3-18 10:40:45", "2018-3-20 21:24:25", "2018-3-22 5:15:25"],
+    myicon:"/images/my-icon.png",
+    username:"登录/注册",
+    myinfo:'',
+    orderstatus:[{
+      img:'/images/wait-pay.png',
+      name:'待支付'
+    },
+      {
+        img: '/images/wait-get.png',
+        name: '待收货'
+      },
+      {
+        img: '/images/wait-say.png',
+        name: '待评价'
+      },
+      {
+        img: '/images/wait-back.png',
+        name: '退换/售后'
+      }],
+    discountdata:[
+      {
+        img: "/images/userinfo.png",
+        name: "我的信息",
+        url:''
+      },{
+      img:"/images/kanjia_icon.png",
+      name:"我的砍价",
+      url:'/pages/my/mybargain/mybargain'
+    },
+      {
+        img: "/images/bank.png",
+        name: "我的银行卡",
+        url:'/pages/my/mybank/mybank'
+      },
+      {
+        img: "/images/icon-wallet.png",
+        name: "我的购物车",
+        url:'/pages/shopcar/shopcar'
+      },
+      {
+        img: "/images/icon-add.png",
+        name: "我的地址",
+        url: '/pages/my/myadd/myadd'
+      },
+      {
+        img: "/images/icon-coupon.png",
+        name: "我的优惠券",
+        url: '/pages/my/mycoupons/mycoupons'
+      }]
+  }
+  onLoad(){
+    if (commonjs.tokenTF()){
+        wx.request({
+            url: 'https://e-shop.szrundao.com/WebApi/UserManager/UserAccountInfo',
+            data:{
+            token: commonjs.getToken()
+            },
+            success:function(res){
+            console.log(res)
+            },
+            fail:function(error){
+            wx.showToast({
+                title: error,
+                icon:"none"
+            })
+            }
+        })
+    }
+    else{
+    console.log(commonjs.tokenTF())
+    }
+  }
+  methods={
+    Login:function(){
+        wx.navigateTo({
+        url: '/pages/login/login',
+        })
+    }
+  }
+}
+</script>
+<style lang="less">
+/* pages/my/my.wxss */
+.text{
+  font-size: 12px;
+  padding-left:30px;
+  text-align: center;
+}
+.c{
+  zoom: 1
+}
+.c::after{
+  content: "";
+  display: block;
+  clear: both;
+  z-index: 1
+}
+.fl{
+  float: left
+}
+.fr{
+  float: right
+}
+image{
+  width: 100%;
+  display: block
+}
+.btn{
+  margin: auto;
+  width: 80px;
+  height: 36px;
+  line-height: 36px;
+  font-size: 16px;
+  border: none;
+  margin-top: 20px;
+  background: no-repeat
+}
+.my-box{
+  width: 100%;
+}
+.my-box .my-top{
+  width: 100%;
+  padding: 40rpx 60rpx;
+  box-sizing: border-box;
+  background-color: rgb(255, 137, 0);
+  display: flex
+}
+.my-box .my-top .my-icon{
+  width: 160rpx;
+  border-radius: 50%;
+  overflow: hidden
+}
+.my-box .my-top .my-icon image{
+  width: 100%;
+  display: block
+}
+.my-box .my-top .my-name{
+  color: #FFF;
+  padding-left: 40rpx;
+  padding-top: 40rpx
+}
+.my-box .order-box{
+  padding: 20rpx 40rpx;
+  width: 100%;
+  box-sizing: border-box;
+  color: #666;
+  border-bottom: 1px solid #e5e5e5
+}
+.my-box .order-box .btnsty{
+  color: #999;
+  font-size: 32rpx;
+}
+.my-box .order-status{
+  display: flex;
+  flex-direction: row;
+}
+.my-box .order-status .status-box{
+  padding: 20rpx 0;
+  border-bottom: 1px solid #e5e5e5;
+  flex: 1
+}
+.my-box .order-status .status-box .img{
+ padding: 0 60rpx;
+ box-sizing: border-box
+}
+.my-box .order-status .status-box .img image{
+  width: 100%;
+  display: block
+}
+.my-box .order-status .status-box .text-box{
+  text-align: center;
+  font-size: 32rpx
+}
+.my-box .discount-box{
+  width: 100%
+}
+.my-box .discount-box .discount{
+  padding: 16rpx 20rpx;
+  background: url("https://e-shop.szrundao.com/Assets/Source/img/icon-right.png") no-repeat right center;
+  background-size: 48rpx ;
+  font-size: 32rpx;
+  color: #666;
+  border-bottom: 1rpx solid #e5e5e5
+}
+.my-box .discount-box .discount .img{
+  width: 40rpx;
+  margin-right: 20rpx
+} 
+</style>

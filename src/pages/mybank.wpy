@@ -1,0 +1,272 @@
+<template>
+  <!--pages/my/mybank/mybank.wxml-->
+<view>
+ <block wx:for="{{bankdata}}">
+  <view class='bank-box bankbg-{{item.banksort}}' @tap='Actbank({{index}})'>
+   <view class='borshaw'>
+   <view class='left-img'>
+    <view class='img'>
+     <image src='{{item.img}}' mode='widthFix'></image>
+    </view>
+   </view>
+   <view class='center-content'>
+    <view class='name'>{{item.bankname}}</view>
+    <view class='dec'>{{item.banktype}}</view>
+    <view class='dec'>
+      <text class='pr40'>****</text>
+      <text class='pr40'>****</text>
+      <text class='pr40'>****</text>
+    </view>
+   </view>
+   <view class='right-num'>
+   <view class='num-box'>{{item.banknum}}</view>
+   </view>
+   </view>
+   <view class="remove-box {{actnum==index?'active':''}}">
+   <text>移除银行卡</text>
+  </view>
+  </view>
+  </block>
+  <view class='newbank' bindtap='Newbank'>新增+</view>
+  <view class='newbank-box' wx:if='{{newbankTF}}'>
+   <view class='shaw'></view>
+   <view class='bank'>
+    <view class='tit'>新建银行卡</view>
+     <view class='flex-box'>
+      <view class='dec'>姓名：</view>
+      <view class='input-box'><input></input></view>
+     </view>
+     <view class='flex-box'>
+      <view class='dec'>卡号：</view>
+      <view class='input-box'><input></input></view>
+     </view>
+     <view class='btn-box'>
+      <view class='btn one' bindtap='Closenew'>取消</view>
+      <view class='btn two'>确认</view>
+     </view>
+   </view>
+  </view>
+</view>
+</template>
+<script>
+import wepy from "wepy";
+export default class Mybank extends wepy.page {
+  config={
+      navigationBarTitleText:"我的银行卡"
+  }
+  data={
+    bankdata:[{
+      img:'/images/icon-commercial.png',
+      bankname:"招商银行",
+      banktype:"储蓄卡",
+      banknum:"6223587865563665",
+      bankid:"2352",
+      banksort:"1"
+    }, 
+    {
+      img: '/images/icon-construction.png',
+      bankname: "工商银行",
+      banktype: "信用卡",
+      banknum: "6223587865562164",
+      bankid: "2352",
+      banksort: "2"
+      }, 
+      {
+        img: '/images/icon-transportation.png',
+        bankname: "建设银行",
+        banktype: "储蓄卡",
+        banknum: "6223587865563175",
+        bankid: "2352",
+        banksort: "3"
+      }],
+      newbankTF:false,
+      removeTF:false,
+      actnum:-1
+  }
+  onLoad(){
+    for(var i=0;i<this.bankdata.length;i++){
+      var num =this.bankdata[i].banknum.slice(12);
+      this.bankdata[i].banknum=num;
+    }
+  }
+  methods={
+    //打开新增银行卡编辑框
+    Newbank(){
+        this.newbankTF=true
+    },
+    //关闭银行卡编辑框
+    Closenew(){
+        this.newbankTF=false
+    },
+    Actbank(index){
+        this.actnum=index
+    },
+    Removebank(){
+
+    }
+ }
+
+}
+</script>
+<style lang="less">
+/* pages/my/mybank/mybank.wxss */
+image{
+  width: 100%;
+  display: block
+}
+.bank-box{
+  width: 100%;
+  padding: 20rpx 10rpx;
+  box-sizing: border-box;
+  color: #FFF;
+  box-shadow: 2rpx 2rpx 5rpx #333
+}
+.pr40{
+  padding-right: 40rpx;
+}
+.bank-box .borshaw{
+  display: flex;
+}
+.bank-box .remove-box{
+  text-align: right;
+  font-size: 32rpx;
+  color: #e5e5e5;
+  padding: 20rpx 0 0 0;
+  border-top: 1rpx solid #e5e5e5;
+  display: none
+}
+.bank-box .active{
+    display: block
+}
+.bank-box .remove-box text{
+  padding: 5rpx 10rpx;
+  border-radius: 10rpx;
+  background-color: #a2a2a2;
+  color: #FFF;
+}
+.bankbg-1{
+  background-color:#00e4ff
+}
+.bankbg-2{
+  background-color:#ff6c00
+}
+.bankbg-3{
+  background-color:#0030ff
+}
+.bank-box .left-img{
+  width: 70rpx;
+  padding: 0 20rpx;
+  flex: 0
+}
+.bank-box .left-img .img{
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  background-color: #FFF;
+  overflow: hidden;
+  margin: auto;
+  margin-top: 10rpx;
+}
+.bank-box .left-img .img image{
+  width: 80%;
+  display: block;
+  padding-top: 8rpx;
+  margin: auto
+}
+.bank-box .center-content{
+  flex: 1
+}
+.bank-box .center-content .name{
+  font-size: 32rpx;
+  padding: 5rpx 0;
+}
+.bank-box .center-content .dec{
+  font-size: 28rpx;
+  padding:5rpx 0;
+}
+.bank-box .right-num{
+  width: 60rpx;
+  padding: 0 20rpx;
+  flex: 0;
+  position: relative
+}
+.bank-box .right-num .num-box{
+  font-size: 36rpx;
+  position: absolute;
+  right: 0;
+  bottom: 10rpx;
+}
+.newbank{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 20rpx 0;
+  text-align: center;
+  background-color: #ff6c00;
+  font-size: 32rpx;
+  border-top: 1rpx solid #999;
+  color: #FFF;
+  z-index: 99
+}
+.newbank-box{
+  position:fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+}
+.newbank-box .shaw{
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5)
+}
+.newbank-box .bank{
+  background-color: #FFF;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom:0;
+  height: 400rpx;
+}
+.newbank-box .bank .tit{
+  padding: 30rpx 0;
+  text-align: center;
+  font-size: 36rpx;
+  color: #333
+}
+.newbank-box .bank .flex-box{
+  display: flex;
+  padding-top: 20rpx;
+  padding-left: 40rpx;
+  font-size: 32rpx;
+  color: #666
+}
+.newbank-box .bank .flex-box .input-box{
+  border: 1rpx solid #ccc;
+  padding-left: 10rpx;
+  border-radius: 5rpx;
+}
+.newbank-box .bank .btn-box{
+  display: flex
+}
+.newbank-box .bank .btn-box .btn{
+  flex: 1;
+  padding: 20rpx 0;
+  font-size: 32rpx;
+  text-align: center;
+  margin-top: 30rpx;
+  color: #FFF
+}
+.newbank-box .bank .btn-box .one{
+  background-color: #ff6c00
+}
+.newbank-box .bank .btn-box .two{
+  background-color: #f00
+}
+</style>
+

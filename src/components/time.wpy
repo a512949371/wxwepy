@@ -1,0 +1,69 @@
+<template>
+  <!-- wepy 组件属于静态组件，数据只能共用，不能实现多组计时器分别传值，放弃 -->
+  <view>
+    <view class='timebox'>
+    <view class='img'><image src='../images/time.png' mode='widthFix'></image></view>
+    <view class='time'>{{timedata.day}}天{{timedata.hour}}时{{timedata.min}}分{{timedata.sec}}秒</view>
+    </view>
+  </view>
+
+</template>
+<script>
+import wepy from "wepy";
+export default class Time extends wepy.component {
+  data={
+    time:'',
+    timedata:{
+      time:'',
+      day:'',
+      hour:'',
+      min:'',
+      sec:''
+    }
+  }
+  props={
+    times:Object
+  }
+  onLoad(){
+    this.time=this.times;
+    console.log(this.time)
+    this.Time()
+  }
+  //计时器
+  Time(){
+    var that = this;
+    setInterval(function () {
+      var enddata = new Date(that.time.endtime);
+      var newdata = new Date();
+      var data = (enddata - newdata) / 1000;
+        that.timedata.time=data,
+        that.timedata.day= Math.floor(data /3600/24),
+        that.timedata.hour=Math.floor(data / 3600%24),	
+        that.timedata.min=Math.floor((data % 3600) / 60),
+        that.timedata.sec=Math.floor((data % 3600) % 60),	
+      console.log(that.time.endtime);
+      that.$apply();
+    }, 1000);    
+  }
+}
+</script>
+<style lang="less">
+  image{
+    width: 100%;
+    display: block
+  }
+  .timebox{
+    text-align: center;
+    font-size: 32rpx;
+    padding-top:30rpx;
+    padding-left: 260rpx;
+    display: flex;
+  }
+  .timebox .img{
+    width: 50rpx;
+    display: inline-block
+  }
+  .timebox .time{
+    display: inline-block
+  }
+</style>

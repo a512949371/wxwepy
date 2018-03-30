@@ -1,0 +1,105 @@
+<style>
+
+</style>
+<template>
+   <view class='alert-box' wx:if="{{lertTF}}">
+  <view class='shaw'></view>
+  <view class='content-box'>
+   <view class='img'>
+    <image src='/images/icon_bg_01@2x.png' mode='widthFix'></image>
+    <view class='close'><image src='/images/icon_back@2x.png' mode='widthFix' @tap='Close'></image> </view>
+    <view class='acttime-box'><text class='white'>剩余</text><text class='time'>{{timedata.day||00}}</text>:<text class='time'>{{timedata.hour||00}}</text>:<text class='time'>{{timedata.min||00}}</text>:<text class='time'>{{timedata.sec||00}}</text></view>
+    <view class='target-box'>
+     <view class='img'><image src='/images/icon_mbje@2x.png' mode='widthFix'></image></view>
+     <view class='price'>￥4323</view>
+    </view>
+    <view class='shop-box'>
+     <view class='img'><image src='/images/image_01@2x.png' mode='widthFix'></image></view>
+     <view class='info-box'>
+      <view class='dec'>2B铅笔团队</view>
+      <view class='dec'>【万千少女的选择】白色连衣裙，韩国进口</view>
+      <view class='price'>￥999 <text class='mix'>￥888</text> </view>
+     </view>
+    </view>
+    <view class='btn-box'>
+     <image src='/images/icon-btn@2x.png' mode='widthFix'></image>
+    </view>
+   </view>
+  </view>
+ </view>
+</template>
+<script>
+import wepy from "wepy";
+export default class Alert extends wepy.component {
+  data={
+    lertTF:null,
+    timedata: {
+    day: '',
+    time: '',
+    hour: '',
+    min: '',
+    sec: '',
+    },
+    closetime:''
+  }
+  props={
+      alertTF:{
+          type:Boolean,
+          default:false,
+          twoWay:true
+      },
+      acttime:{
+          type:String,
+          default:''
+      }
+  }
+  methods={
+    Close(){
+        this.lertTF= !this.lertTF;
+        clearInterval(this.closetime)
+    }
+  }
+  onLoad(){
+      this.lertTF=this.alertTF;
+      this.Time()
+  }
+  onHide(){
+      console.log("23333")
+  }
+    Time(){
+     var that = this;
+     this.closetime= setInterval(function () {
+        var enddata = new Date(that.acttime);
+        var newdata = new Date();
+        if(enddata<newdata){
+          return
+        }
+        var data = (enddata - newdata) / 1000;
+        if (Math.floor(data / 3600 / 24)<10){
+          that.timedata.day = "0" + Math.floor(data / 3600 / 24)
+        }else{
+          that.timedata.day = Math.floor(data / 3600 / 24)
+        }
+        if (Math.floor(data / 3600 % 24)< 10) {
+          that.timedata.hour = "0" + Math.floor(data / 3600 % 24)
+        }else{
+          that.timedata.hour = Math.floor(data / 3600 % 24)
+        }
+        if (Math.floor((data % 3600) / 60) < 10) {
+          that.timedata.min = "0" + Math.floor((data % 3600) / 60)
+        }else{
+          that.timedata.min =Math.floor((data % 3600) / 60)
+        }
+        if (Math.floor((data % 3600) % 60) < 10) {
+          that.timedata.sec = "0" + Math.floor((data % 3600) % 60)
+        }else{
+          that.timedata.sec =Math.floor((data % 3600) % 60)
+        }
+        that.$apply()
+        console.log(that.timedata.hour);
+      }, 1000);
+    }
+
+}
+</script>
+

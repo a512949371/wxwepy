@@ -1,0 +1,105 @@
+<style lang="less">
+.container {
+  height: 100%;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+</style>
+
+<script>
+import wepy from 'wepy'
+import 'wepy-async-function'
+import Promise from 'promise-polyfill'
+
+export default class extends wepy.app {
+  config = {
+    pages: [
+      'pages/shopcar',
+      'pages/orderlist',
+      'pages/mycoupons',
+      'pages/mybargin',
+      'pages/mybank',
+      'pages/myadd',
+      'pages/my',
+      'pages/list',
+      'pages/index',
+      'pages/classification'
+    ],
+    window: {
+      backgroundTextStyle: 'light',
+      navigationBarBackgroundColor: '#fff',
+      navigationBarTitleText: 'WeChat',
+      navigationBarTextStyle: 'black'
+    },
+    tabBar:{
+      color: "#7A7E83",
+      selectedColor: "#3cc51f",
+      borderStyle: "black",
+      backgroundColor: "#ffffff",
+      list:[
+        {
+          pagePath:"pages/index",
+          iconPath:"images/icon-index.png",
+          selectedIconPath:"images/icon-indexred.png",
+          text:"首页"
+        },
+        {
+          pagePath:"pages/list",
+          iconPath:"images/icon-list.png",
+          selectedIconPath:"images/icon-listred.png",
+          text:"商品分类"
+        },
+        {
+          pagePath:"pages/my",
+          iconPath:"images/icon-my.png",
+          selectedIconPath:"images/icon-myred.png",
+          text:"个人中心"
+        }
+      ]
+    }
+  }
+
+  globalData = {
+    userInfo: null
+  }
+
+  constructor () {
+    super()
+    //this.use('requestfix')
+    this.use('promisify');
+  }
+
+  onLaunch() {
+    this.testAsync()
+  }
+
+  sleep (s) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('promise resolved')
+      }, s * 1000)
+    })
+  }
+
+  async testAsync () {
+    const data = await this.sleep(3)
+    console.log(data)
+  }
+
+  getUserInfo(cb) {
+    const that = this
+    if (this.globalData.userInfo) {
+      return this.globalData.userInfo
+    }
+    wepy.getUserInfo({
+      success (res) {
+        that.globalData.userInfo = res.userInfo
+        cb && cb(res.userInfo)
+      }
+    })
+  }
+}
+</script>

@@ -1,0 +1,126 @@
+<template>
+<view>
+ <view class='mybargain-box'>
+ <repeat for="{{bargaindata}}" item="item" >
+  <view class='mybargain'>
+   <Time :times="item"></Time>
+        <view class=" class-box">
+            <view class="left">
+            <navigator url='/pages/shopdetail/shopdetail?id={{item.id}}'>
+            <image src="{{item.img}}" mode='widthFix'></image>
+            </navigator>
+            </view>
+            <view class="right">    
+            <navigator url='/pages/shopdetail/shopdetail?id={{item.id}}'>
+              <view class='tit'>{{item.name}}</view>
+              <view class='info'>{{item.dec}} </view>
+              <view class='price'>￥：<text>{{item.price}}</text></view>
+              <view class='info'>当前购买人数:<text>{{item.buynumber}}</text>/<text>{{item.zbuynumber}}</text></view>
+              </navigator>
+            </view>
+            <view class='right-btn'>
+             <view class='btn'>购买</view>
+            </view>
+        </view>
+  </view>
+ </repeat>
+ </view>
+</view>
+</template>
+<script>
+import wepy from "wepy";
+import Time from "../components/time";
+export default class Mybargin extends wepy.page {
+  config={
+      navigationBarTitleText:"我的砍价"
+  }
+  components={
+      Time
+  }
+  data={
+   bargaindata:[{
+     name:"监听页面加载",
+     dec:"生命周期函数",
+     price:"123",
+     img:"/images/my-icon.png",
+     endtime:"2018-3-21 19:20:15",
+     buynumber:"5",
+     zbuynumber:"10"
+   },
+     {
+       name: "监听页面加载",
+       dec: "生命周期函数2",
+       price: "123",
+       img: "/images/my-icon.png",
+       endtime: "2018-3-28 19:20:15",
+       buynumber: "5",
+       zbuynumber: "10"
+     },
+     {
+       name: "监听页面加载",
+       dec: "生命周期函数3",
+       price: "123",
+       img: "/images/my-icon.png",
+       endtime: "2018-3-24 19:20:15",
+       buynumber: "5",
+       zbuynumber: "10"
+     },],
+     cstext:["23333","5555","66666"]
+  }
+}
+</script>
+<style lang="less">
+/* pages/my/mybargain/mybargain.wxss */
+.class-box{
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1rpx solid #e5e5e5
+}
+.class-box .left{
+  max-width: 240rpx;
+  min-width: 240rpx;
+  box-sizing: border-box;
+  padding: 30rpx;
+}
+.class-box .left image{
+  width: 100%;
+  display: block;
+}
+.class-box .right{
+  z-index: 1;
+  padding-top: 30rpx;
+  flex: 1
+}
+.class-box .right .tit{
+  font-size: 32rpx;
+  color: #333;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap
+}
+.class-box .right .info{
+  font-size: 28rpx;
+  color: #666;
+  padding: 20rpx 0;
+}
+.class-box .right .price{
+  font-size: 32rpx;
+  color: #333
+}
+.class-box .right .price text{
+  color: #f00
+}
+.class-box .right-btn{
+  width: 100rpx;
+  padding-right: 30rpx
+}
+.class-box .right-btn .btn{
+  border: 1rpx solid #f00;
+  padding: 5rpx 10rpx;
+  color: #f00;
+  font-size: 32rpx;
+  text-align: center;
+  margin-top: 40rpx;
+}
+</style>
+

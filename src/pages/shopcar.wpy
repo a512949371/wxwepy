@@ -1,0 +1,341 @@
+<template>
+  <view>
+  <view class='shopcar-box'>
+    <block wx:for="{{shopdata}}" wx:for-item="data" wx:for-index="i">
+      <view class='bg'>
+        <view class='shopname-box'>
+          <view class='shopname'>{{data.shopname}}</view>
+          <view class='icon'>
+            <checkbox-group  @change="Changeall({{i}})">
+              <checkbox checked='{{data.checked}}'></checkbox>
+            </checkbox-group>
+          </view>
+        </view>
+        <block wx:for="{{data.shoplist}}">
+          <view class='shoplist-box'>
+            <view class='leftimg'>
+              <image mode='widthFix' src='{{item.img}}'></image>
+            </view>
+            <view class='center-content'>
+              <view class='name'>{{item.name}}</view>
+              <view class='dec'>{{item.dec}}</view>
+              <view class='num-box'>
+                <view class='reduce' @tap='Reduce({{i}},{{index}})'>-</view>
+                <input value='{{item.buynum}}' @input='Changebuynum({{i}},{{index}})'></input>
+                <view class='add' @tap='Add({{i}},{{index}})'>+</view>
+              </view>
+            </view>
+            <view class='right-icon'>
+              <checkbox-group  @change="Changeone({{i}},{{index}})">
+                <checkbox checked='{{item.checked}}'></checkbox>
+              </checkbox-group>
+              <view class='price'>￥<text class='red'>{{item.price}}</text> </view>
+            </view>
+          </view>
+        </block>
+      </view>
+    </block>
+  </view>
+  <view class='carbuy-box'>
+   <view class='info'>
+    <view>一共<text class='red'>{{buynum||0}}</text>件商品,共<text class='red'>{{buyprice||0}}</text>元</view>
+   </view>
+   <view class='btn'>购买</view>
+  </view>
+</view>
+</template>
+<script>
+import wepy from "wepy";
+export default class Shopcar extends  wepy.page{
+  config={
+      navigationBarTitleText:"购物车"
+  }
+  data={
+ shopdata:[{
+      shopname:"天猫一号",
+      shopnameId:"1",
+      checked:false,
+      shoplist:[{
+        name:"生命周期函数",
+        id:"2",
+        price:"111",
+        dec:"监听页面加载",
+        buynum:"2",
+        img:"../images/my-icon.png",
+        checked:false,
+        znum:"10"
+      },
+      {
+        name: "监听页面初次渲染完成",
+        id: "2",
+        price: "131",
+        dec: "监听页面加载",
+        buynum: "2",
+        img: "../images/my-icon.png",
+        checked: false,
+        znum: "99"
+      }]
+    },
+      {
+        shopname: "天猫二号",
+        shopnameId: "2",
+        checked: false,
+        shoplist: [{
+          name: "生命周期函数",
+          id: "2",
+          price: "111",
+          dec: "监听页面加载",
+          buynum: "2",
+          img: "../images/my-icon.png",
+          checked: false,
+          znum: "99"
+        },
+        {
+          name: "监听页面初次渲染完成",
+          id: "2",
+          price: "131",
+          dec: "监听页面加载",
+          buynum: "2",
+          img: "../images/my-icon.png",
+          checked: false,
+          znum: "99"
+        }]
+      },
+      {
+        shopname: "天猫三号",
+        shopnameId: "3",
+        checked: false,
+        shoplist: [{
+          name: "生命周期函数",
+          id: "2",
+          price: "111",
+          dec: "监听页面加载",
+          buynum: "2",
+          img: "../images/my-icon.png",
+          checked: false,
+          znum: "99"
+        }]
+      }],
+      buydata:[],
+      buynum:0,
+      buyprice:0,     
+  }
+  methods={
+ //选择某个商家下面所有商品
+  Changeall(pindex,e){
+    var length = this.shopdata[pindex].shoplist;
+    if(e.detail.value.length > 0){
+      this.shopdata[pindex].checked = true;
+      for(let i=0;i<length.length;i++){
+        length[i].checked=true;
+        this.buynum +=Number(length[i].buynum);
+        this.buyprice += Number(length[i].buynum*length[i].price)
+      }
+    }else{
+      this.shopdata[pindex].checked = false;
+      for (let i = 0; i < length.length; i++) {
+        if (length[i].checked ==true){
+          this.buynum -=Number(length[i].buynum);
+          this.buyprice -= Number(length[i].buynum * length[i].price)
+        }
+        length[i].checked = false;
+      }
+    }
+  },
+  //选择某个商品
+  Changeone(pindex,cindex,e){
+    console.log(pindex)
+    if(e.detail.value.length>0){
+      this.shopdata[pindex].checked = true;
+      this.shopdata[pindex].shoplist[cindex].checked = true;
+      this.buynum += Number(this.shopdata[pindex].shoplist[cindex].buynum);
+      this.buyprice += Number(this.shopdata[pindex].shoplist[cindex].buynum * this.shopdata[pindex].shoplist[cindex].price)
+    }else{
+      var length = this.shopdata[pindex].shoplist;
+      var num=0;
+      this.shopdata[pindex].shoplist[cindex].checked = false;
+      this.buynum -= Number(this.shopdata[pindex].shoplist[cindex].buynum);
+      this.buyprice -= Number(this.shopdata[pindex].shoplist[cindex].buynum * this.shopdata[pindex].shoplist[cindex].price)
+      for(let i=0;i<length.length;i++){
+        if(length[i].checked==true){
+          num++;
+        }
+      }
+      if(num==0){
+        this.shopdata[pindex].checked = false;
+      }
+    }
+  },
+  //购买数量事件
+  Reduce(pindex,cindex,e){
+    var num = Number(this.shopdata[pindex].shoplist[cindex].buynum);
+    if(num>0){
+      this.shopdata[pindex].shoplist[cindex].buynum--;
+      if (this.shopdata[pindex].shoplist[cindex].checked == true) {
+        this.buynum--;
+        this.buyprice -= parseInt(this.shopdata[pindex].shoplist[cindex].price)
+      }
+    }else{
+      wx.showToast({
+        title: '购买数量不能小于0',
+        icon:"none"
+      })
+    }
+  },
+  Add(pindex,cindex,e){
+    var num = Number(this.shopdata[pindex].shoplist[cindex].buynum);
+    var znum = Number(this.shopdata[pindex].shoplist[cindex].znum);
+    if (znum > num) {
+      this.shopdata[pindex].shoplist[cindex].buynum++;
+      if (this.shopdata[pindex].shoplist[cindex].checked == true) {
+        this.buynum++;
+        this.buyprice += Number(this.shopdata[pindex].shoplist[cindex].price)
+      }
+    } else {
+      wx.showToast({
+        title: '购买数量不能大于可购买数',
+        icon:"none"
+      })
+    }
+    console.log(this.shopdata[pindex].shoplist[cindex].znum)
+    console.log(num)
+  },
+  Changebuynum(pindex,cindex,e){
+    var znum = Number(this.shopdata[pindex].shoplist[cindex].znum);
+    var bfnum = Number(this.shopdata[pindex].shoplist[cindex].buynum);
+    if(e.detail.value<0){
+      wx.showToast({
+        title: '购买数量不能小于0',
+        icon:"none"
+      })
+    }else if (e.detail.value>znum){
+      wx.showToast({
+        title: '购买数量不能大于可购买数',
+        icon:"none"
+      })
+    }
+    else{
+      this.shopdata[pindex].shoplist[cindex].buynum = e.detail.value;
+      if (this.shopdata[pindex].shoplist[cindex].checked==true){
+        this.buynum += Number(e.detail.value - bfnum);
+        console.log(this.buynum)
+        this.buyprice += Number((e.detail.value - bfnum) * this.shopdata[pindex].shoplist[cindex].price);
+      }
+    }
+  }
+  }
+}
+</script>
+<style lang="less">
+/* pages/shopcar/shopcar.wxss */
+.shopcar-box{
+  width: 100%;
+  background-color: #eee
+}
+.shopcar-box .bg{
+  background-color: #FFF;
+  margin-bottom: 50rpx;
+}
+checkbox{
+  zoom: 60%
+}
+checkbox:checked{
+  color: #f00
+}
+image{
+  width: 100%;
+  display: block
+}
+.shopcar-box .shopname-box{
+  padding: 10rpx;
+  border-top: 1rpx solid #e5e5e5;
+  border-bottom: 1rpx solid #e5e5e5;
+  display: flex;
+
+}
+.shopname-box .shopname{
+  font-size: 32rpx;
+  flex: 1
+}
+.shopname-box .icon{
+  width: 40rpx;
+}
+.shopcar-box .shoplist-box{
+  width: 100%;
+  display: flex;
+  padding: 20rpx 0 20rpx 20rpx;
+  border-bottom: 1rpx solid #e5e5e5;
+}
+.shopcar-box .shoplist-box .leftimg{
+  width: 180rpx;
+  padding: 20rpx;
+  box-sizing: border-box
+}
+.shopcar-box .shoplist-box .center-content{
+  flex: 1
+}
+.shopcar-box .shoplist-box .center-content .name{
+  font-size: 32rpx;
+  color: #333;
+}
+.shopcar-box .shoplist-box .center-content .dec{
+  font-size: 30rpx;
+  color: #999;
+  padding: 10rpx 0;
+}
+.shopcar-box .shoplist-box .center-content .num-box{
+  display: flex
+}
+.shopcar-box .shoplist-box .center-content .num-box .reduce,.shopcar-box .shoplist-box .center-content .num-box .add{
+  width: 60rpx;
+  border: 1rpx solid #e5e5e5;
+  text-align: center
+}
+.shopcar-box .shoplist-box .center-content .num-box input{
+  text-align: center;
+  width: 100rpx;
+  border: 1rpx solid #e5e5e5;
+  color: #999
+}
+.shopcar-box .shoplist-box .right-icon .price{
+  font-size: 32rpx;
+  padding-top: 30rpx;
+  color: #666
+}
+.shopcar-box .shoplist-box .right-icon .price .red{
+  color: #f00;
+  padding-left: 10rpx
+}
+.shopcar-box .shoplist-box .right-icon{
+  width: 120rpx;
+}
+.carbuy-box{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #e5e5e5;
+  border-top: 1rpx solid #ccc;
+  display: flex
+}
+.carbuy-box .info{
+  padding:30rpx;
+  flex: 1;
+  font-size: 32rpx;
+  color: #666
+}
+.carbuy-box .info .red{
+  color: #f00;
+  padding: 0 10rpx;
+}
+.carbuy-box .btn{
+  padding:20rpx 0;
+  text-align: center;
+  width: 300rpx;
+  font-size: 32rpx;
+  color: #FFF;
+  background-color: #ff8900
+}
+</style>
+
+

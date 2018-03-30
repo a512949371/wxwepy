@@ -1,0 +1,149 @@
+<template>
+  <view class='height bortop'>
+  <view class='flexbox height'>
+    <scroll-view class='left-list height' scroll-y >
+      <block wx:for="{{sortdata}}">
+        <view class='list-box' @tap="Changecontent({{index}})">
+          <view  class='text'>
+           <text>{{item.name}}</text>
+          </view>
+        </view>
+      </block>
+    </scroll-view>
+    <scroll-view class='right-content height' scroll-y>
+    <view class='content-box'>
+     <block wx:for="{{sortdata[index].nodes}}">
+     <view class='tit'>{{item.name}}</view>
+     <view class='shoplist c'>
+       <block wx:for="{{item.nodes}}">
+       <navigator url='/pages/classification?id={{item.id}}'>
+       <view class='classification'>
+        <image src='{{url+item.icon}}' mode='widthFix'></image>
+        <view class='text-box'>
+         <text>{{item.name}}</text>
+        </view>
+       </view>
+       </navigator>
+       </block>
+     </view>
+     </block>
+     </view>
+    </scroll-view>
+  </view>
+  
+</view>
+</template>
+<script>
+import wepy from "wepy";
+export default class List extends wepy.page {
+    config={
+        navigationBarTitleText: '商品分类'
+    }
+  data ={
+    sortdata:'',
+    url:"https://e-shop.szrundao.com/WebApi/Public/picture/" ,
+    index:"0" 
+  }
+  onReady(){
+    var that=this;
+    wx.showLoading({
+      title: '加载中。。。',
+    })
+    wx.request({
+      url: 'https://e-shop.szrundao.com/WebApi/ShopManager/GoodsTypeList',
+      success:function(res){
+          that.sortdata=res.data.data
+          that.$apply();
+        console.log(res.data.data);
+        wx.hideLoading()
+      },
+      fail:function(error){
+        wx.showToast({
+          title: error,
+        })
+      }
+    })
+  }
+  methods={
+    //点击分类加载相应商品类型
+    Changecontent(id,event){
+        this.index=id
+    }
+  }
+}
+</script>
+<style lang="less">
+page{
+  height: 100%;
+}
+.height{
+  height: 100%;
+}
+.bortop{
+  border-top: 1px solid #e5e5e5
+}
+.flexbox{
+  display: flex;
+}
+.c{
+  zoom: 1
+}
+.c::after{
+  content: "";
+  display:block;
+  z-index: 99;
+  clear: both;
+}
+.left-list{
+  flex: 0;
+  min-width: 200rpx;
+  padding: 20rpx 0;
+  height: 100%;
+  border-right: 1px solid #e5e5e5
+}
+.left-list .list-box{
+ width: 100%;
+ display: block;
+ text-align: center;
+ box-sizing: border-box;
+ padding:10rpx 0;
+ font-size: 32rpx
+}
+.left-list .list-box image{
+  width: 100%;
+  display: block
+}
+.left-list .list-box .text{
+  margin-top: 20rpx;
+  padding: 0 20rpx;
+  padding-bottom: 10rpx;  
+  border-bottom: 1rpx solid #e5e5e5
+}
+.right-content{
+  flex: 1
+}
+.right-content .content-box .tit{
+  text-align: center;
+  padding-top: 20rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1px solid #e5e5e5
+}
+.right-content .content-box .shoplist{
+  width: 100%
+}
+.right-content .content-box .shoplist .classification{
+  width: 50%;
+  float: left;
+  box-sizing: border-box;
+  padding: 20rpx 30rpx;
+}
+.right-content .content-box .shoplist .classification image{
+  width: 100%;
+  display: block
+}
+.right-content .content-box .shoplist .classification .text-box{
+  text-align: center;
+  font-size: 32rpx
+}
+</style>
+

@@ -1,0 +1,154 @@
+<template>
+  <view >
+ <block wx:for="{{shoplist}}">
+ <navigator url='/pages/shopdetail/shopdetail?id={{item.id}}'>
+    <view class=" class-box">
+        <view class="left"><image src="{{url+item.pic_id}}" mode='widthFix'></image></view>
+        <view class="right">    
+          <view class='tit'>{{item.name}}</view>
+          <view class='info'>{{item.propaganda}} </view>
+          <view class='price'>零售价：<text>{{item.price}}</text></view>
+        </view>
+    </view>
+  </navigator>
+ </block>
+</view>
+</template>
+<script>
+import wepy from "wepy";
+export default class Classification extends wepy.page{
+  config={
+    navigationBarTitleText: '商品列表',
+    enablePullDownRefresh: true
+  }
+  data= {
+    shoplist:[],
+    page:1,
+    pagesize:"10",
+    goodstype:'',
+    url:"https://e-shop.szrundao.com/WebApi/Public/picture/",
+    nodata:true,
+  }
+   onLoad(options){
+      console.log(options)
+      var that=this;
+      this.goodstype=options.id
+      console.log(this.goodstype)
+      this.loadData(that);
+   }
+
+  /**
+   * 页面相关事件处理函数--监听用户下拉动作
+   */
+  onPullDownRefresh() {
+    wx.showLoading({
+      title: '加载中',
+    })
+    console.log("11111")
+    var that = this;
+    if (this.data.nodata && this.data.page>0){
+      this.page--
+    }else{
+      this.page
+    }
+      this.page=this.page,
+      this.Pagpagesize= this.pagesize,
+      this.loadData(that,"2")    
+  }
+
+  /**
+   * 页面上拉触底事件的处理函数
+   */
+  onReachBottom() {
+    wx.showLoading({
+      title: '加载中',
+    })
+    var that = this;
+    if(this.data.nodata){
+      this.page++
+    }else{
+      this.page
+    }
+      this.page=this.page,
+      this.Pagpagesize=this.pagesize,
+    this.loadData(that,"3")
+  }
+  //根据商品类型请求商品列表
+  loadData(that,num){
+    wepy.request({
+        url: 'https://e-shop.szrundao.com/WebApi/ShopManager/GoodsListByType',
+        data: {
+          GoodsType: that.goodstype,
+          Page: that.page,
+          PageSize: that.pagesize
+        }
+      }).then((res)=>{
+        console.log(res.data)
+        if(res.data.status!=115){
+          that.shoplist = res.data.data;
+          that.nodata=true;
+        }else{
+          that.shoplist = that.shoplist;
+          that.nodata=false;
+          if(num=="3"){
+            that.page --;
+          } 
+        }
+        wx.hideLoading()
+        that.$apply()
+      }).catch((res)=>{
+        console.log(res)
+        wx.hideLoading()
+      })
+  }
+}
+</script>
+<style lang="less">
+.c{
+  zoom: 1
+}
+.c::after{
+  content: "";
+  display: block;
+  clear: both;
+  z-index: 1
+}
+.class-box{
+  display: flex;
+  flex-direction: row;
+}
+.class-box .left{
+  max-width: 300rpx;
+  min-width: 300rpx;
+  box-sizing: border-box;
+  padding: 30rpx;
+  flex: 0
+}
+.class-box .left image{
+  width: 100%;
+  display: block;
+  min-height: 100rpx
+}
+.class-box .right{
+  z-index: 1;
+  padding-top: 30rpx;
+}
+.class-box .right .tit{
+  font-size: 32rpx;
+  color: #333
+}
+.class-box .right .info{
+  font-size: 28rpx;
+  color: #666;
+  padding: 20rpx 0;
+}
+.class-box .right .price{
+  font-size: 32rpx;
+  color: #333
+}
+.class-box .right .price text{
+  color: #f00
+}
+</style>
+
+

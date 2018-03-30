@@ -1,0 +1,248 @@
+<template>
+  <view>
+ <view class='coupons-head'>
+  <view class="coupon {{couponTF==0?'active':''}}"  @tap='Changenav(0)'>全部</view>
+  <view class="coupon {{couponTF==1?'active':''}}"  @tap='Changenav(1)'>未使用</view>
+  <view class="coupon {{couponTF==2?'active':''}}"  @tap='Changenav(2)'>已使用</view>
+ </view>
+ <Mycouponlist  :coupondata.sync="coupondata"></Mycouponlist>
+</view>
+</template>
+<script>
+import wepy from "wepy";
+import Mycouponlist from "../components/mycouponlist";
+export default class Mycoupons extends wepy.page {
+  config={
+      navigationBarTitleText:"我的优惠券"
+  }
+  components={
+      Mycouponlist
+  }
+  data={
+    couponTF:0,
+    coupondata:'',
+    coupondatao: [{
+      img: '/images/icon-shopall.png',
+      couponname: "满100减50",
+      coupontype: "所有商品可用",
+      couponstarttime: "2018-3-11",
+      couponendtime:"2018-3-21",
+      couponid: "2352",
+      couponsort: "1"
+    },
+    {
+      img: '/images/icon-shopcl.png',
+      couponname: "满100减80",
+      coupontype: "仅限日常用品类商品",
+      couponstarttime: "2018-3-21",
+      couponendtime: "2018-5-21",
+      couponid: "2352",
+      couponsort: "2"
+    },
+    {
+      img: '/images/icon-shopall.png',
+      couponname: "满30减10",
+      coupontype: "所有商品可用",
+      couponstarttime: "2018-3-21",
+      couponendtime: "2018-5-21",
+      couponid: "2352",
+      couponsort: "1"
+    },
+    {
+      img: '/images/icon-shopdey.png',
+      couponname: "满30减10",
+      coupontype: "所有商品可用",
+      couponstarttime: "2018-3-21",
+      couponendtime: "2018-5-21",
+      couponid: "2352",
+      couponsort: "3"
+    } ,
+    {
+      img: '/images/icon-shopdey.png',
+      couponname: "满30减10",
+      coupontype: "所有商品可用",
+      couponstarttime: "2018-3-21",
+      couponendtime: "2018-5-21",
+      couponid: "2352",
+      couponsort: "3"
+    }],
+    coupondatat: [{
+      img: '/images/icon-shopcl.png',
+      couponname: "满100减50",
+      coupontype: "所有商品可用",
+      couponstarttime: "2018-3-11",
+      couponendtime: "2018-3-21",
+      couponid: "2352",
+      couponsort: "2"
+    },
+    {
+      img: '/images/icon-shopcl.png',
+      couponname: "满100减80",
+      coupontype: "仅限日常用品类商品",
+      couponstarttime: "2018-3-21",
+      couponendtime: "2018-5-21",
+      couponid: "2352",
+      couponsort: "2"
+    },
+    {
+      img: '/images/icon-shopcl.png',
+      couponname: "满30减10",
+      coupontype: "所有商品可用",
+      couponstarttime: "2018-3-21",
+      couponendtime: "2018-5-21",
+      couponid: "2352",
+      couponsort: "2"
+    }],
+    coupondatah: [{
+      img: '/images/icon-shopall.png',
+      couponname: "满100减50",
+      coupontype: "所有商品可用",
+      couponstarttime: "2018-3-11",
+      couponendtime: "2018-3-21",
+      couponid: "2352",
+      couponsort: "1"
+    },
+    {
+      img: '/images/icon-shopall.png',
+      couponname: "满100减80",
+      coupontype: "仅限日常用品类商品",
+      couponstarttime: "2018-3-21",
+      couponendtime: "2018-5-21",
+      couponid: "2352",
+      couponsort: "1"
+    },
+    {
+      img: '/images/icon-shopall.png',
+      couponname: "满30减10",
+      coupontype: "所有商品可用",
+      couponstarttime: "2018-3-21",
+      couponendtime: "2018-5-21",
+      couponid: "2352",
+      couponsort: "1"
+    }],
+  }
+  onLoad(){
+      this.coupondata=this.coupondatao
+  }
+  methods={
+  //选项卡切换
+  Changenav(index,e){
+    this.couponTF=index;
+    if (index==0){
+        this.coupondata=this.coupondatao
+    }
+    if (index == 1) {
+        this.coupondata=this.coupondatat
+    }
+    if (index == 2) {
+        this.coupondata=this.coupondatah
+    }
+   }
+  }
+}
+</script>
+<style lang="less">
+/* pages/my/mycoupons/mycoupons.wxss */
+.coupons-head{
+  display: flex;
+  padding: 10rpx 0 0 0;
+}
+.coupons-head .coupon{
+  flex: 1;
+  text-align: center;
+  font-size: 32rpx;
+  padding-bottom: 10rpx;
+  color: #666
+}
+.coupons-head .active{
+  color: #f00;
+  border-bottom: 1rpx solid #f00
+}
+image{
+  width: 100%;
+  display: block
+}
+.mt40{
+  margin-top: 40rpx;
+}
+.bank-box{
+  width: 100%;
+  padding: 20rpx 10rpx;
+  box-sizing: border-box;
+  color: #FFF;
+  box-shadow: 2rpx 2rpx 5rpx #333;
+  margin-bottom: 40rpx;
+}
+.pr40{
+  padding-right: 40rpx;
+}
+.bank-box .borshaw{
+  display: flex;
+}
+.bank-box .remove-box{
+  text-align: right;
+  font-size: 32rpx;
+  color: #e5e5e5;
+  padding: 20rpx 0 0 0;
+  border-top: 1rpx solid #e5e5e5
+}
+.bank-box .remove-box text{
+  padding: 5rpx 10rpx;
+  border-radius: 10rpx;
+  background-color: #a2a2a2;
+  color: #FFF;
+}
+.bankbg-1{
+  background-color: #00e4ff
+}
+.bankbg-2{
+  background-color: #ff6c00
+}
+.bankbg-3{
+  background-color: #999
+}
+.bank-box .left-img{
+  width: 70rpx;
+  padding: 0 20rpx;
+  flex: 0
+}
+.bank-box .left-img .img{
+  width: 70rpx;
+  height: 70rpx;
+  border-radius: 50%;
+  background-color: #FFF;
+  overflow: hidden;
+  margin: auto;
+  margin-top: 10rpx;
+}
+.bank-box .left-img .img image{
+  width: 80%;
+  display: block;
+  padding-top: 8rpx;
+  margin: auto
+}
+.bank-box .center-content{
+  flex: 1
+}
+.bank-box .center-content .name{
+  font-size: 32rpx;
+  padding: 5rpx 0;
+}
+.bank-box .center-content .dec{
+  font-size: 28rpx;
+  padding:5rpx 0;
+}
+.bank-box .right-num{
+  width: 160rpx;
+  padding: 0 20rpx;
+  position: relative
+}
+.bank-box .right-num .num-box{
+  font-size: 32rpx;
+  position: absolute;
+  right: 0;
+  top: 10rpx;
+}
+</style>
+
+

@@ -1,0 +1,310 @@
+<template>
+  <view >
+ <view class='top-nav'>
+  <block wx:for="{{nav}}">
+   <view class="nav {{index==navTF?'active':''}}"  @tap='Changenav({{index}})'>
+     <text>{{item.name}}</text>
+   </view>
+  </block>
+ </view>
+ <Order  :orderdata.sync="orderdata"></Order>
+</view>
+</template>
+<script>
+import wepy from "wepy";
+import Order from "../components/order";
+export default class Orderlist extends wepy.page {
+    config={
+        navigationBarTitleText:"订单列表",
+        enablePullDownRefresh:true
+    }
+    components={
+        Order
+    }
+    data={
+nav:[{
+      name:"全部"
+    },
+    {
+      name:"待收货"
+    },
+    {
+     name:"待付款"
+    },
+    {
+      name:"待评价"
+    }],
+    navTF:"0",
+    orderdata:'',
+    orderdatao: [{
+      company: "天猫一号店",
+      status: "1",
+      img: "/images/shop2.jpg",
+      price: "135",
+      buynum: "7",
+      shopname: "生命周期函数，可以为函数",
+      des: "一个在methods段中定义的方法名",
+      id: "1"
+    },
+    {
+      company: "天猫一号店",
+      status: "2",
+      img: "/images/my-icon.png",
+      price: "105",
+      buynum: "3",
+      shopname: "生命周期函数，可以为函数",
+      des: "一个在methods段中定义的方法名",
+      id: "2"
+    },
+    {
+      company: "天猫一号店",
+      status: "3",
+      img: "/images/my-icon.png",
+      price: "235",
+      buynum: "1",
+      shopname: "生命周期函数，可以为函数",
+      des: "一个在methods段中定义的方法名",
+      id: "3"
+    }],
+    orderdatat: [{
+      company: "天猫二号店",
+      status: "1",
+      img: "/images/my-icon.png",
+      price: "135",
+      buynum: "3",
+      shopname: "生命周期函数，可以为函数",
+      des: "一个在methods段中定义的方法名",
+      id: "4"
+    },
+    {
+      company: "天猫二号店",
+      status: "2",
+      img: "/images/my-icon.png",
+      price: "135",
+      buynum: "3",
+      shopname: "生命周期函数，可以为函数",
+      des: "一个在methods段中定义的方法名",
+      id: "5"
+    },
+    {
+      company: "天猫二号店",
+      status: "3",
+      img: "/images/my-icon.png",
+      price: "135",
+      buynum: "3",
+      shopname: "生命周期函数，可以为函数",
+      des: "一个在methods段中定义的方法名",
+      id: "6"
+    }],
+    orderdatah: [{
+      company: "天猫三号店",
+      status: "1",
+      img: "/images/my-icon.png",
+      price: "135",
+      buynum: "3",
+      shopname: "生命周期函数，可以为函数",
+      des: "一个在methods段中定义的方法名",
+      id: "7"
+    },
+    {
+      company: "天猫三号店",
+      status: "2",
+      img: "/images/my-icon.png",
+      price: "135",
+      buynum: "3",
+      shopname: "生命周期函数，可以为函数",
+      des: "一个在methods段中定义的方法名",
+      id: "8"
+    },
+    {
+      company: "天猫三号店",
+      status: "3",
+      img: "/images/my-icon.png",
+      price: "135",
+      buynum: "3",
+      shopname: "生命周期函数，可以为函数",
+      des: "一个在methods段中定义的方法名",
+      id: "9"
+    }],
+    orderdataf: [{
+      company: "天猫四号店",
+      status: "1",
+      img: "/images/my-icon.png",
+      price: "135",
+      buynum: "3",
+      shopname: "生命周期函数，可以为函数",
+      des: "一个在methods段中定义的方法名",
+      id: "11"
+    },
+    {
+      company: "天猫四号店",
+      status: "2",
+      img: "/images/my-icon.png",
+      price: "135",
+      buynum: "3",
+      shopname: "生命周期函数，可以为函数",
+      des: "一个在methods段中定义的方法名",
+      id: "12"
+    },
+    {
+      company: "天猫四号店",
+      status: "3",
+      img: "/images/my-icon.png",
+      price: "135",
+      buynum: "3",
+      shopname: "生命周期函数，可以为函数",
+      des: "一个在methods段中定义的方法名",
+      id: "13"
+    },],
+    zhangsan:[ {
+      name: '张三',
+      age: 20
+    }, {
+      name: '张三',
+      age: 20
+    },]        
+    }
+    onLoad(){
+        this.orderdata= this.orderdatao
+    }
+    /**
+     * 页面相关事件处理函数--监听用户下拉动作
+     */
+    onPullDownRefresh () {
+        console.log("下拉")
+    }
+    /**
+     * 页面上拉触底事件的处理函数
+     */
+    onReachBottom () {
+        console.log("下拉")
+    }
+    methods={
+        //导航切换事件
+        Changenav(index,e){
+            if(this.navTF==index){
+            return false
+            }else{
+                this.navTF=index
+            }
+            if (this.navTF == 0) {
+                this.orderdata=this.orderdatao
+            }
+            if (this.navTF == 1) {
+                this.orderdata= this.orderdatat
+            }
+            if (this.navTF == 2) {
+                this.orderdata=this.orderdatah
+            }
+            if (this.navTF == 3) {
+                this.orderdata=this.orderdataf
+            }
+            }
+    }
+}
+</script>
+<style lang="less">
+.top-nav{
+  width: 100%;
+  padding-top: 20rpx;
+  border-top: 1rpx solid #e5e5e5;
+  display: flex
+}
+.top-nav .nav{
+  text-align: center;
+  font-size: 32rpx;
+  flex: 1;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #e5e5e5;
+}
+.top-nav .active{
+  color: #f00;
+  border-bottom-color: #f00
+}
+.c{
+  zoom: 1
+}
+.c::after{
+  content: "";
+  display: block;
+  clear: both;
+  z-index: 1
+}
+.fl{
+  float: left
+}
+.fr{
+  float: right
+}
+.pl40{
+  padding-left: 40rpx;
+}
+.list-box{
+  width: 100%;
+  box-sizing: border-box;  
+}
+.list-box .list-top{
+  padding: 20rpx;
+  border-bottom: 1rpx solid #e5e5e5;
+  box-sizing: border-box;
+  font-size: 36rpx;
+  color: #333
+}
+.stat{
+  font-size: 32rpx;
+  color: #999
+}
+.class-box{
+  display: flex;
+  flex-direction: row;
+}
+.class-box .left{
+  max-width: 300rpx;
+  min-width: 300rpx;
+  box-sizing: border-box;
+  padding: 30rpx;
+  flex: 0
+}
+.class-box .left image{
+  width: 100%;
+  display: block;
+}
+.class-box .right{
+  z-index: 1;
+  padding-top: 30rpx;
+}
+.class-box .right .tit{
+  font-size: 32rpx;
+  color: #333;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap
+}
+.class-box .right .info{
+  font-size: 28rpx;
+  color: #666;
+  padding: 20rpx 0;
+}
+.class-box .right .price{
+  font-size: 32rpx;
+  color: #333
+}
+.class-box .right .price text{
+  color: #f00
+}
+.all-box{
+  font-size: 32rpx;
+  color: #555;
+  text-align: right;
+  padding-right: 20rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #e5e5e5
+}
+.all-box .blod{
+  font-weight: bold;
+  color: #000;
+  padding: 0 10rpx;
+}
+</style>
+
+
