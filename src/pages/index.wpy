@@ -240,7 +240,7 @@ image{
   <view class='shop c'>
   
     <view class='left'>
-     <navigator url='/pages/shopdetail/shopdetail?id={{shopLeft[0].id}}'>
+     <navigator url='/pages/shopdetail?id={{shopLeft[0].id}}'>
       <view><image src="{{shopLeft[0].img}}" mode='widthFix'></image></view>
       <view class='text-one'><text>{{shopLeft[0].name}}</text></view>
       <view class='text-two'><text>零售价:{{shopLeft[0].price}}</text></view>
@@ -249,7 +249,7 @@ image{
     <view class='right' >
     <block wx:for="{{shopLeft}}">
       <view wx:if="{{index!=0}}">
-       <navigator url='/pages/shopdetail/shopdetail?id={{item.id}}'>
+       <navigator url='/pages/shopdetail?id={{item.id}}'>
         <view><image src="{{item.img}}" mode='widthFix'></image></view>
         <view class='text-one'><text>{{item.name}}</text></view>
         <view class='text-two'><text>零售价:{{item.price}}</text></view>

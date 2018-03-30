@@ -1,0 +1,86 @@
+<template>
+<view class='mt80'>
+  <view class='img'><image src='{{imgSrc+imgdata.pic_id}}' mode='widthFix'></image></view>
+  <view class="tit"><text >{{imgdata.name}}</text></view>
+  <view class="tit"><text >零售价:{{imgdata.price}}元</text></view>
+  <Parsehtml :parserName="Parsehtml" :parserContent.sync="htmldata"/>
+  <view class='fixbox'>
+   <view class='btnbox' bindtap='Cart'>加入购物车</view>
+   <view class='btnbox red' bindtap='Buy'>立即购买</view>
+  </view>
+</view>
+</template>
+<script>
+import wepy from "wepy";
+import wxParse from "../wxParse/wxParse.js";
+import Parsehtml from '../components/htmlparser';
+export default class Shopdetail extends wepy.page {
+  config={
+      navigationBarTitleText:"商品详情"
+  }
+  data={
+    img:"/images/shop1.jpg",
+    imgSrc:"https://e-shop.szrundao.com/WebApi/Public/picture/",
+    imgdata:"",
+    htmldata:'',
+  }
+  components={
+      Parsehtml
+  }
+  onLoad(options){
+    var that=this;
+    wx.request({
+      url: 'https://e-shop.szrundao.com/WebApi/ShopManager/GoodsDetail/'+options.id,
+      success:function(res){
+        that.imgdata=res.data.data[0]
+        that.htmldata=res.data.data[0].goods_info_html
+        // wxParse.wxParse('shopdetail', 'html', res.data.data[0].goods_info_html,that,0)
+        console.log(res.data.data[0])
+        that.$apply();
+        that.$invoke('Parsehtml', 'htmlParserNotice');
+      },
+      error:function(error){
+
+      }
+    })      
+  }
+}
+</script>
+<style lang="less">
+@import "../wxParse/wxParse.wxss";
+.tit{
+  font-size:32rpx;
+  padding: 20rpx;
+}
+.pd20{
+ padding:20rpx
+}
+.mt80{
+  margin-bottom: 80rpx
+}
+.fixbox{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 80rpx;
+  background-color: #e5e5e5;
+  border-top: 1px solid #666;
+  text-align: center;
+  display: flex;
+  flex-direction: row;
+  color: #333;
+  font-size: 32rpx;
+}
+.fixbox .btnbox{
+  flex: 1;
+  text-align: center;
+  padding: 20rpx 0;
+}
+.fixbox .red{
+  background-color: #f00;
+  color: #FFF;
+  padding: 20rpx 0;
+}
+</style>
+

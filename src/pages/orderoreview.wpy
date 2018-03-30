@@ -1,0 +1,243 @@
+<template>
+  <!--pages/orderpreview/orderoreview.wxml-->
+<view>
+ <view class='add-box'>
+  <view class='addicon'>
+   <image src='/images/add.png' mode='widthFix'></image>
+  </view>
+  <view class='addinfo' bindtap='Changeadd'>
+   <view class='c fontsize36'>
+    <text class='fl'>{{adddata.username}}</text>
+    <text class='fr'>{{adddata.userphone}}</text>
+   </view>
+   <view class='pt10'>
+     <view class='flexbox'>
+      <view class='addbox'>{{adddata.addinfo}}</view>
+      <view class='iconright'><image src='/images/icon-right.png' mode='widthFix'></image></view>
+     </view>
+   </view>
+  </view>
+ </view>
+  <view class=" class-box">
+      <view class="left">
+      <navigator url='/shopdetail/shopdetail?id={{ordershopdata.id}}'>
+      <image src="{{ordershopdata.img}}" mode='widthFix'></image>
+      </navigator>
+      </view>
+      <view class="right">    
+      <navigator url='/shopdetail/shopdetail?id={{ordershopdata.id}}'>
+        <view class='tit'>{{ordershopdata.name}}</view>
+        <view class='info'>{{ordershopdata.dec}} </view>
+        <view class='price'>￥：<text>{{ordershopdata.price}}</text></view>
+        </navigator>
+      </view>
+      <view class='right-btn'>
+        <view class='btn'>X{{ordershopdata.buynum}}</view>
+      </view>
+  </view>
+  <view class='dec-box'>
+   <view class='dec'>共计:{{ordershopdata.buynum}}件商品</view>
+   <view class='dec'>运费:{{ordershopdata.freight}}元</view>
+   <view class='dec'>合计:{{buyprice}}元</view>
+  </view>
+  <view class='coupons-box'>
+   <view class='tit' wx:if="{{couponsdata.price}}">已使用优惠券<text class='red'>-{{couponsdata.price}}</text></view>
+   <view class='tit' wx:else>使用优惠券</view>
+   <view class='icon-right'><image src='/images/icon-right.png' mode='widthFix'></image></view>
+  </view>
+  <view class='buy-box'>
+   <view class='buy'>共计:{{buyprice-couponsdata.price}}元</view>
+   <view class='btn' bindtap='Pay'>提交订单</view>
+  </view>
+</view>
+</template>
+<script>
+import wepy from "wepy";
+export default class Orderoreview extends wepy.page {
+  config={
+      navigationBarTitleText:"订单确认"
+  }
+  data={
+    adddata:{
+      username:"张三",
+      userphone:"15288151487",
+      addinfo:"云南省昆明市官渡区XXX路XXX号生命周期函数22"
+    },
+    ordershopdata:{
+      id:"3",
+      name:"监听页面加载",
+      dec:"生命周期函数",
+      price:354,
+      img:"/images/my-icon.png",
+      buynum:1,
+      freight:8
+    },
+    buyprice:0,
+    couponsdata:{
+      id:"2354",
+      price:32
+    }
+  }
+  onLoad(){
+    this.buyprice = parseFloat(this.ordershopdata.buynum * this.ordershopdata.price) + parseFloat(this.ordershopdata.freight);
+  }
+}
+</script>
+<style lang="less">
+/* pages/orderpreview/orderoreview.wxss */
+image{
+  width: 100%;
+  display: block;
+}
+.fontsize36{
+  font-size: 36rpx;
+}
+.c{
+  zoom: 1
+}
+.c:after{
+  content: "";
+  display: block;
+  clear: both;
+  z-index: 1
+}
+.fl{
+  float: left
+}
+.fr{
+  float: right
+}
+.pr20{
+  padding-right: 20rpx;
+}
+.pt10{
+  padding-top: 10rpx;
+}
+.add-box{
+  width: 100%;
+  padding: 10rpx 20rpx;
+  display: flex;
+  box-sizing: border-box;
+  border-bottom: 1rpx solid #e5e5e5
+}
+.add-box .addicon{
+  width: 40rpx;
+}
+.add-box .addinfo{
+  flex: 1;
+  font-size: 32rpx;
+  padding-left: 20rpx;
+  box-sizing: border-box;
+  color: #666
+}
+.add-box .addinfo .iconright{
+  width: 40rpx;
+}
+.add-box .addinfo .flexbox{
+  display: flex
+}
+.add-box .addinfo .flexbox .addbox{
+  flex: 1
+}
+.class-box{
+  display: flex;
+  flex-direction: row;
+  border-bottom: 1rpx solid #e5e5e5
+}
+.class-box .left{
+  max-width: 240rpx;
+  min-width: 240rpx;
+  box-sizing: border-box;
+  padding: 30rpx;
+}
+.class-box .left image{
+  width: 100%;
+  display: block;
+}
+.class-box .right{
+  z-index: 1;
+  padding-top: 30rpx;
+  flex: 1
+}
+.class-box .right .tit{
+  font-size: 32rpx;
+  color: #333;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap
+}
+.class-box .right .info{
+  font-size: 28rpx;
+  color: #666;
+  padding: 20rpx 0;
+}
+.class-box .right .price{
+  font-size: 32rpx;
+  color: #333
+}
+.class-box .right .price text{
+  color: #f00
+}
+.class-box .right-btn{
+  width: 100rpx;
+  padding-right: 30rpx
+}
+.class-box .right-btn .btn{
+  padding: 5rpx 10rpx;
+  color: #f00;
+  font-size: 32rpx;
+  text-align: center;
+  margin-top: 40rpx;
+}
+.dec-box{
+  padding-top: 20rpx;
+  padding-right: 20rpx;
+  padding-bottom: 20rpx;
+  border-bottom: 1rpx solid #e5e5e5
+}
+.dec-box .dec{
+  font-size: 32rpx;
+  text-align: right;
+  color: #333;
+  padding-top: 5rpx;
+}
+.coupons-box{
+  padding: 20rpx;
+  font-size: 32rpx;
+  display: flex;
+  box-sizing: border-box
+}
+.coupons-box .tit{
+  flex: 1
+}
+.coupons-box .icon-right{
+  width: 40rpx;
+}
+.buy-box{
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-top: 1rpx solid #e5e5e5;
+  background-color: #e9e9e9;
+  display: flex;
+  font-size: 32rpx;
+  align-items: center
+}
+.buy-box .buy{
+  flex: 1;
+  padding-left: 20rpx;
+}
+.buy-box .btn{
+  width: 200rpx;
+  padding: 30rpx 0;
+  text-align: center;
+  background-color: #ff8900;
+  color: #FFF
+}
+.red{
+  color: #f00;
+  padding-left: 10rpx;
+}
+</style>
+

@@ -10,7 +10,7 @@
   </view>
  </view>
  <view class='order-box c'>
- <navigator url='/pages/my/orderlist/orderlist'>
+ <navigator url='/pages/orderlist'>
   <text class='fl'>全部订单</text>
   <text class='fr btnsty'>查看更多>></text>
   </navigator>
@@ -84,27 +84,27 @@ export default class My extends wepy.page {
       },{
       img:"/images/kanjia_icon.png",
       name:"我的砍价",
-      url:'/pages/my/mybargain/mybargain'
+      url:'/pages/mybargin'
     },
       {
         img: "/images/bank.png",
         name: "我的银行卡",
-        url:'/pages/my/mybank/mybank'
+        url:'/pages/mybank'
       },
       {
         img: "/images/icon-wallet.png",
         name: "我的购物车",
-        url:'/pages/shopcar/shopcar'
+        url:'/pages/shopcar'
       },
       {
         img: "/images/icon-add.png",
         name: "我的地址",
-        url: '/pages/my/myadd/myadd'
+        url: '/pages/myadd'
       },
       {
         img: "/images/icon-coupon.png",
         name: "我的优惠券",
-        url: '/pages/my/mycoupons/mycoupons'
+        url: '/pages/mycoupons'
       }]
   }
   onLoad(){
